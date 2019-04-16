@@ -9,7 +9,7 @@ export default class Offer extends Component {
 				Send this link to your peer:
 				<br />
 				<br />
-				<a href={this.offerLink}>{this.offerLink}</a>
+				<a href={this.link}>{this.link}</a>
 			</div>
 		);
 	}
@@ -20,7 +20,7 @@ export default class Offer extends Component {
 		this.setState({ token: btoa(offer.sdp) });
 	}
 
-	get offerLink() {
+	get link() {
 		const url = window.location.href.replace(window.location.hash, "");
 		return `${url}?token=${this.state.token}#/invite`;
 	}
