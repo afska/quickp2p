@@ -1,18 +1,18 @@
 import React, { Component } from "react";
-import Propose from "./Propose";
+import Offer from "./Offer";
 import Invite from "./Invite";
 
 export default class App extends Component {
 	render() {
 		const route = window.location.hash;
 
-		if (route.startsWith("#/propose")) return <Propose />;
+		if (route.startsWith("#/offer")) return <Offer />;
 		if (route.startsWith("#/invite")) return <Invite />;
 
 		return (
 			<div>
 				<h1>Valid urls:</h1>
-				/#/propose
+				/#/offer
 				<br />
 				/#/invite?token=INVITE_TOKEN
 				<br />

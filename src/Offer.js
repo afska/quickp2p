@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-export default class Propose extends Component {
+export default class Offer extends Component {
 	state = {};
 
 	render() {
@@ -9,7 +9,7 @@ export default class Propose extends Component {
 				Send this link to your peer:
 				<br />
 				<br />
-				<a href={this.inviteLink}>{this.inviteLink}</a>
+				<a href={this.offerLink}>{this.offerLink}</a>
 			</div>
 		);
 	}
@@ -20,8 +20,8 @@ export default class Propose extends Component {
 		this.setState({ token: btoa(offer.sdp) });
 	}
 
-	get inviteLink() {
+	get offerLink() {
 		const url = window.location.href.replace(window.location.hash, "");
-		return `${url}/#/invite?token=${this.state.token}`;
+		return `${url}?token=${this.state.token}#/invite`;
 	}
 }

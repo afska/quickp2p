@@ -6,10 +6,12 @@ export default class Chat extends Component {
 	render() {
 		return (
 			<div>
-				<textarea value="piola" readOnly style={{ width: "50%" }} rows={10} />
+				<textarea value="test" readOnly style={{ width: "50%" }} rows={10} />
 				<br />
 				<input type="text" />
 			</div>
 		);
 	}
+
+	get offerToken() {}
 }
