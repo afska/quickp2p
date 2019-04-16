@@ -1,26 +1,17 @@
 import React, { Component } from "react";
+import Player1 from "./Player1";
+import Player2 from "./Player2";
 
 export default class App extends Component {
-	state = { isConnected: false };
-
 	render() {
 		switch (window.location.hash) {
 			case "#/player1":
-				return <div>player1</div>;
+				return <Player1 />;
 			case "#/player2":
-				return <div>player2</div>;
+				return <Player2 />;
 			default:
 				return <div>You need to use either /#/player1 or /#/player2</div>;
 		}
-
-		return (
-			<div>
-				<button onClick={this.connect}>Connect</button>
-				<button onClick={this.disconnect} disabled={!this.state.isConnected}>
-					Disconnect
-				</button>
-			</div>
-		);
 	}
 
 	componentWillMount() {
