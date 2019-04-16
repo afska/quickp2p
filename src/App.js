@@ -1,17 +1,24 @@
 import React, { Component } from "react";
-import Player1 from "./Player1";
-import Player2 from "./Player2";
+import Propose from "./Propose";
+import Invite from "./Invite";
 
 export default class App extends Component {
 	render() {
-		switch (window.location.hash) {
-			case "#/player1":
-				return <Player1 />;
-			case "#/player2":
-				return <Player2 />;
-			default:
-				return <div>You need to use either /#/player1 or /#/player2</div>;
-		}
+		const route = window.location.hash;
+
+		if (route.startsWith("#/propose")) return <Propose />;
+		if (route.startsWith("#/invite")) return <Invite />;
+
+		return (
+			<div>
+				<h1>Valid urls:</h1>
+				/#/propose
+				<br />
+				/#/invite?token=INVITE_TOKEN
+				<br />
+				/#/accept?token=ACCEPT_TOKEN
+			</div>
+		);
 	}
 
 	componentWillMount() {

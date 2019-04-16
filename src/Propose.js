@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-export default class Player1 extends Component {
+export default class Propose extends Component {
 	state = {};
 
 	render() {
@@ -21,6 +21,7 @@ export default class Player1 extends Component {
 	}
 
 	get inviteLink() {
-		return `${window.location.href}/#/join?token=${this.state.token}`;
+		const url = window.location.href.replace(window.location.hash, "");
+		return `${url}/#/invite?token=${this.state.token}`;
 	}
 }
