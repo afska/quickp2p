@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import utils from "./utils";
 
 export default class Offer extends Component {
-	state = {};
+	state = { token: null };
 
 	render() {
 		return (
@@ -21,7 +22,7 @@ export default class Offer extends Component {
 	}
 
 	get link() {
-		const url = window.location.href.replace(window.location.hash, "");
+		const url = utils.getBaseUrl();
 		return `${url}?token=${this.state.token}#/invite`;
 	}
 }
