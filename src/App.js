@@ -1,26 +1,22 @@
 import React, { Component } from "react";
-import Propose from "./screens/Propose";
-import Invite from "./screens/Invite";
-import Accept from "./screens/Accept";
+import Create from "./screens/Create";
+import Join from "./screens/Join";
 import Chat from "./screens/Chat";
 
 export default class App extends Component {
 	render() {
 		const route = window.location.hash;
 
-		if (route.startsWith("#/propose")) return <Propose />;
-		if (route.startsWith("#/invite")) return <Invite />;
-		if (route.startsWith("#/accept")) return <Accept />;
+		if (route.startsWith("#/create")) return <Create />;
+		if (route.startsWith("#/join")) return <Join />;
 		if (route.startsWith("#/chat")) return <Chat />;
 
 		return (
 			<div>
 				<h1>Valid urls:</h1>
-				/#/propose
+				/#/create
 				<br />
-				/#/invite?token=INVITE_TOKEN
-				<br />
-				/#/accept?token=ACCEPT_TOKEN
+				/#/join?token=INVITE_TOKEN
 			</div>
 		);
 	}

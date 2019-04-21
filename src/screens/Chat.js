@@ -17,11 +17,16 @@ export default class Chat extends Component {
 
 	componentDidMount() {
 		const channel = window.channel;
+		if (!channel) return;
 
 		channel.onmessage = function(e) {
 			if (!e.data) return;
 
 			console.log(e.data);
 		};
+	}
+
+	componentWillUnmount() {
+		window.channel = undefined;
 	}
 }
