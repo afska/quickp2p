@@ -19,11 +19,9 @@ export default class Join extends Component {
 	async componentDidMount() {
 		if (!this.inviteToken) return;
 
-		const connection = new RTCPeerConnection(
-			new RTCPeerConnection({
-				iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
-			})
-		);
+		const connection = new RTCPeerConnection({
+			iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
+		});
 
 		const offer = { sdp: atob(this.inviteToken), type: "offer" };
 		await connection.setRemoteDescription(offer);
