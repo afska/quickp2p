@@ -13,28 +13,39 @@ export default class Accept extends Component {
 	async componentDidMount() {
 		if (!this.answerToken) return;
 
-		const connection = new RTCPeerConnection(
-			new RTCPeerConnection({
-				iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
-			})
-		);
+		const connection = new RTCPeerConnection({
+			iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
+		});
+		connection.createDataChannel("data");
 		const offer = await connection.createOffer();
 		await connection.setLocalDescription(offer);
-		const answer = { sdp: atob(this.answerToken), type: "answer" };
-		await connection.setRemoteDescription(answer);
 
-		console.log("OFFER", offer);
-		console.log("ANSWER", answer);
+		connection.onicecandidate = async (e) => {
+			if (e.candidate === null) {
+				// (search has finished)
 
-		connection.ondatachannel = ({ channel }) => {
-			console.log("CHANNEL!");
+				console.log("OFFER", connection.localDescription.sdp);
 
-			channel.onopen = () => {
-				alert("CONNECTED!");
+				const answer = { sdp: atob(this.answerToken), type: "answer" };
+				await connection.setRemoteDescription(answer);
 
-				window.channel = channel;
-				window.location.hash = "#/chat";
-			};
+				console.log("ANSWER", answer.sdp);
+
+				connection.ondatachannel = ({ channel }) => {
+					console.log("CHANNEL!");
+
+					channel.onopen = () => {
+						alert("CONNECTED!");
+
+						window.channel = channel;
+						window.location.hash = "#/chat";
+					};
+				};
+
+				connection.oniceconnectionstatechange = function(e) {
+					console.log("STATE", connection.iceConnectionState);
+				};
+			}
 		};
 	}
 

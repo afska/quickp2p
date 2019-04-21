@@ -19,14 +19,20 @@ export default class Propose extends Component {
 		const connection = new RTCPeerConnection({
 			iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
 		});
+		connection.createDataChannel("data");
 		const offer = await connection.createOffer();
+		await connection.setLocalDescription(offer);
 
-		console.log("OFFER", offer);
-		connection.onicecandidate = function(e) {
-			console.log("CANDIDATE", e.candidate);
+		connection.onicecandidate = (e) => {
+			if (e.candidate === null) {
+				// (search has finished)
+
+				console.log("OFFER", connection.localDescription.sdp);
+
+				const token = btoa(connection.localDescription.sdp);
+				this.setState({ token });
+			}
 		};
-
-		this.setState({ token: btoa(offer.sdp) });
 	}
 
 	get link() {

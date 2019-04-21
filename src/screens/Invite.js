@@ -27,22 +27,34 @@ export default class Invite extends Component {
 				iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
 			})
 		);
+
 		const offer = { sdp: atob(this.offerToken), type: "offer" };
 		await connection.setRemoteDescription(offer);
 		const answer = await connection.createAnswer();
 		await connection.setLocalDescription(answer);
 
-		console.log("ANSWER", answer);
+		connection.onicecandidate = (e) => {
+			if (e.candidate === null) {
+				// (search has finished)
 
-		const channel = connection.createDataChannel("data");
-		channel.onopen = () => {
-			console.log("CONNECTED!");
+				console.log("ANSWER", connection.localDescription.sdp);
 
-			window.channel = channel;
-			window.location.hash = "#/chat";
+				const channel = connection.createDataChannel("data");
+				channel.onopen = () => {
+					console.log("CONNECTED!");
+
+					window.channel = channel;
+					window.location.hash = "#/chat";
+				};
+
+				connection.oniceconnectionstatechange = function(e) {
+					console.log("STATE", connection.iceConnectionState);
+				};
+
+				const token = btoa(connection.localDescription.sdp);
+				this.setState({ token });
+			}
 		};
-
-		this.setState({ token: btoa(answer.sdp) });
 	}
 
 	get offerToken() {
