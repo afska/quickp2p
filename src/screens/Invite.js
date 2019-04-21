@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import utils from "./utils";
+import utils from "../utils";
 
 export default class Invite extends Component {
 	state = { token: null };
@@ -22,11 +22,25 @@ export default class Invite extends Component {
 	async componentDidMount() {
 		if (!this.offerToken) return;
 
-		const connection = new RTCPeerConnection();
+		const connection = new RTCPeerConnection(
+			new RTCPeerConnection({
+				iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
+			})
+		);
 		const offer = { sdp: atob(this.offerToken), type: "offer" };
 		await connection.setRemoteDescription(offer);
 		const answer = await connection.createAnswer();
-		this.setState({ token: btoa([this.offerToken, answer.sdp]) });
+		await connection.setLocalDescription(answer);
+
+		const channel = connection.createDataChannel("data");
+		channel.onopen = () => {
+			console.log("CONNECTED!");
+
+			window.channel = channel;
+			window.location.hash = "#/chat";
+		};
+
+		this.setState({ token: btoa(answer.sdp) });
 	}
 
 	get offerToken() {

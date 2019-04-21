@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import utils from "./utils";
+import utils from "../utils";
 
-export default class Offer extends Component {
+export default class Propose extends Component {
 	state = { token: null };
 
 	render() {
@@ -16,7 +16,9 @@ export default class Offer extends Component {
 	}
 
 	async componentDidMount() {
-		const connection = new RTCPeerConnection();
+		const connection = new RTCPeerConnection({
+			iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
+		});
 		const offer = await connection.createOffer();
 		this.setState({ token: btoa(offer.sdp) });
 	}
