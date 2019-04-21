@@ -20,6 +20,12 @@ export default class Propose extends Component {
 			iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
 		});
 		const offer = await connection.createOffer();
+
+		console.log("OFFER", offer);
+		connection.onicecandidate = function(e) {
+			console.log("CANDIDATE", e.candidate);
+		};
+
 		this.setState({ token: btoa(offer.sdp) });
 	}
 

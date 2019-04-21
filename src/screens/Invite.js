@@ -32,6 +32,8 @@ export default class Invite extends Component {
 		const answer = await connection.createAnswer();
 		await connection.setLocalDescription(answer);
 
+		console.log("ANSWER", answer);
+
 		const channel = connection.createDataChannel("data");
 		channel.onopen = () => {
 			console.log("CONNECTED!");

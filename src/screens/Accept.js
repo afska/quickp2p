@@ -23,7 +23,12 @@ export default class Accept extends Component {
 		const answer = { sdp: atob(this.answerToken), type: "answer" };
 		await connection.setRemoteDescription(answer);
 
+		console.log("OFFER", offer);
+		console.log("ANSWER", answer);
+
 		connection.ondatachannel = ({ channel }) => {
+			console.log("CHANNEL!");
+
 			channel.onopen = () => {
 				alert("CONNECTED!");
 
