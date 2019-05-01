@@ -17,13 +17,14 @@ export default class Channel extends EventEmitter {
 	}
 
 	disconnect() {
+		const wasConnected = this.isConnected;
 		if (this.dataChannel) this.dataChannel.close();
 		if (this.connection) this.connection.close();
 
 		this.connection = null;
 		this.dataChannel = null;
 		this.$waitAnswer = null;
-		this.emit("disconnected");
+		if (wasConnected) this.emit("disconnected");
 	}
 
 	connect(connection, dataChannel) {

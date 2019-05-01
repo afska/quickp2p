@@ -19,11 +19,12 @@ export default class Create extends Component {
 	}
 
 	async componentDidMount() {
-		this.channel = await quickp2p.createMultiChannel();
+		if (window.channel) window.channel.disconnect();
+
+		window.channel = this.channel = await quickp2p.createMultiChannel();
 		this.setState({ token: this.channel.token });
 
 		this.channel.on("connected", () => {
-			window.channel = this.channel;
 			window.location.hash = "#/chat";
 		});
 	}

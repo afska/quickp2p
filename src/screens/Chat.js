@@ -53,6 +53,9 @@ export default class Chat extends Component {
 	}
 
 	componentWillUnmount() {
+		if (!window.channel) return;
+
+		window.channel.disconnect();
 		window.channel = undefined;
 	}
 
