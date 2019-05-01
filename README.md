@@ -105,14 +105,31 @@ npm install
 npm start
 ```
 
-### Run tests
-
-```bash
-npm test
-```
-
 ### Build
+
+#### Demo
 
 ```bash
 npm run build
 ```
+
+#### Library
+
+```bash
+npm run build-lib
+```
+
+### Deploy
+
+#### Demo
+
+```bash
+./deploy-demo.sh
+```
+
+#### Library
+
+```bash
+./deploy-lib.sh
+```
+

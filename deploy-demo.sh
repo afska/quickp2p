@@ -12,7 +12,7 @@ function try {
 
 rm -rf build/
 try npm run build
-cd build/
+try cd build/
 git init
 git add -A .
 git commit -m "Deploy"
