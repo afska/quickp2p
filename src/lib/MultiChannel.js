@@ -16,6 +16,10 @@ export default class MultiChannel extends EventEmitter {
 				this.handleDisconnection(this.channel1, this.channel2);
 			})
 			.on("data", this.handleData);
+
+		this.handleConnection = this.handleConnection.bind(this);
+		this.handleDisconnection = this.handleDisconnection.bind(this);
+		this.handleData = this.handleData.bind(this);
 	}
 
 	send(data) {
@@ -44,19 +48,21 @@ export default class MultiChannel extends EventEmitter {
 			.on("data", this.handleData);
 	}
 
-	handleConnection = (channel) => {
+	handleConnection(channel) {
 		if (this.isConnected) return;
 		this.selectedChannel = channel;
 		this.emit("connected");
-	};
+	}
 
-	handleDisconnection = (channel, otherChannel) => {
+	handleDisconnection(channel, otherChannel) {
 		if (otherChannel && otherChannel.isConnected)
 			this.selectedChannel = otherChannel;
 		else this.emit("disconnected");
-	};
+	}
 
-	handleData = (data) => this.emit("data", data);
+	handleData(data) {
+		this.emit("data", data);
+	}
 
 	get token() {
 		return this.channel1.token;
