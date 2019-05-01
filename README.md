@@ -10,46 +10,20 @@ npm install --save quickp2p
 
 ## Usage
 
-First you need to provide a simple key-value store.
-
-I'll use [TinyURL](https://tinyurl.com/) for the example, but you can use any free service that lets you store data under a certain key.
+First, you have to create a channel:
 
 ```js
 import quickp2p from "quickp2p";
-import axios from "axios";
 
-quickp2p.setStore({
-  save(key, data) {
-    const url = this._url + encodeURIComponent(data);
-
-    return axios
-      .get(`https://tinyurl.com/create.php?url=${encodeURIComponent(url)}&alias=${key}&submit=Make%20TinyURL!`)
-      .then(() => key);
-  },
-
-  get(key) {
-    return axios
-      .get(`https://tinyurl.com/${key}`)
-      .then((response) => response.request.res.responseUrl)
-      .then((url) => decodeURIComponent(url.replace(this._url, "")));
-  },
-
-  _url: "https://rodri042.github.io/quickp2p/?data="
-});
-```
-
-Then, you can create a channel:
-
-```js
 const channel = await quickp2p.createChannel();
 
 channel
   .on("connected", () => { /* channel connected */ })
   .on("data", (message) => { /* message received */ })
-  .on("disconnected", () => { /* channel disconnected */ })
+  .on("disconnected", () => { /* channel disconnected */ });
 ```
 
-Now send `channel.token` to the other side, which should be running a code like this one:
+Then, you can send `channel.token` to the other side, which should be running the following code:
 
 ```js
 const channel = await quickp2p.joinChannel(token);
@@ -57,13 +31,56 @@ const channel = await quickp2p.joinChannel(token);
 channel
   .on("connected", () => { /* channel connected */ })
   .on("data", (message) => { /* message received */ })
-  .on("disconnected", () => { /* channel disconnected */ })
+  .on("disconnected", () => { /* channel disconnected */ });
 ```
 
-All channels have this two methods:
+All channels have these methods:
 
-- `channel.send(string | buffer)`
-- `channel.disconnect()`
+| Method       | Parameter           | Description                                                   |
+| ------------ |:-------------------:| --------------------------------------------------------------|
+| `send`       | `String` or `Buffer`| Sends the data or throws an error if the connection was lost. |
+| `disconnect` | -                   | Ends the connection.                                          |
+
+## Demo
+
+See https://rodri042.github.io/quickp2p for a live demo!
+
+## How does it works?
+
+### Signalling
+
+By default, it uses a combination of public free services to handle signalling. The session descriptions are saved using:
+- [TinyURL](https://tinyurl.com/): To store temporary data.
+- [CORS Anywhere](https://github.com/Rob--W/cors-anywhere): To access the TinyURL API.
+- [Google](https://google.com): To access the stored data.
+
+See the implementation [here](src/lib/stores/CorsAnywhereTinyUrlGoogleStore.js).
+
+If you want something more reliable, you can use your own key-value store:
+
+```js
+quickp2p.setStore({
+  save(key, data) {
+    // save `data` under a certain `key`
+    // return a promise
+  },
+
+  get(key) {
+    // retrieve the data from `key`
+    // return a promise of the data
+  }
+});
+```
+
+### ICE Servers
+
+By default, it uses the following ICE servers:
+
+```js
+[{ urls: "stun:stun.l.google.com:19302" }]
+```
+
+You can set another list of servers using `quickp2p.setIceServers([ ... ])`.
 
 ## Development
 
