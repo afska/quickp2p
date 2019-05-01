@@ -1,17 +1,44 @@
-import Channel from "./Channel";
-import CorsAnywhereTinyUrlGoogleStore from "./stores/CorsAnywhereTinyUrlGoogleStore";
 import WebRTC from "./WebRTC";
-import uuid from "uuid/v1";
+import Channel from "./Channel";
+import MultiChannel from "./MultiChannel";
+import FreeStore from "./stores/FreeStore";
 
+const CHANNEL2_SUFFIX = "-2";
 const config = {
-	store: CorsAnywhereTinyUrlGoogleStore,
+	store: FreeStore,
 	iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
 };
 const webrtc = new WebRTC(config);
 
 export default {
-	async createChannel() {
-		const channel = new Channel(uuid());
+	async createMultiChannel() {
+		const channel1 = await this.createChannel();
+		const channel = new MultiChannel(channel1);
+
+		channel.$waitChannel2 = async () => {
+			try {
+				const channel2 = await this.joinChannel(
+					channel.token + CHANNEL2_SUFFIX
+				);
+				channel.connect(channel2);
+			} catch (e) {
+				if (channel.$waitChannel2) channel.$waitChannel2();
+			}
+		};
+		channel.$waitChannel2();
+
+		return channel;
+	},
+
+	async joinMultiChannel(token) {
+		const channel1 = await this.joinChannel(token);
+		const channel2 = await this.createChannel(token + CHANNEL2_SUFFIX);
+
+		return new MultiChannel(channel1, channel2);
+	},
+
+	async createChannel(id) {
+		const channel = new Channel(id);
 
 		const {
 			connection,

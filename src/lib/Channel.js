@@ -1,7 +1,8 @@
 import EventEmitter from "eventemitter3";
+import uuid from "uuid/v1";
 
 export default class Channel extends EventEmitter {
-	constructor(token) {
+	constructor(token = uuid()) {
 		super();
 
 		this.token = token;
@@ -10,13 +11,24 @@ export default class Channel extends EventEmitter {
 	}
 
 	send(data) {
-		if (!this.isConnected)
-			throw new Error("Error sending message: Not connected");
+		this._checkConnected();
 
 		this.dataChannel.send(data);
 	}
 
+	disconnect() {
+		if (this.dataChannel) this.dataChannel.close();
+		if (this.connection) this.connection.close();
+
+		this.connection = null;
+		this.dataChannel = null;
+		this.$waitAnswer = null;
+		this.emit("disconnected");
+	}
+
 	connect(connection, dataChannel) {
+		this._checkNotConnected();
+
 		this.connection = connection;
 		this.dataChannel = dataChannel;
 		this.dataChannel.onmessage = (e) => {
@@ -28,17 +40,15 @@ export default class Channel extends EventEmitter {
 		this.emit("connected");
 	}
 
-	disconnect() {
-		this.dataChannel.close();
-		this.connection.close();
-
-		this.connection = null;
-		this.dataChannel = null;
-		this.$waitAnswer = null;
-		this.emit("disconnected");
-	}
-
 	get isConnected() {
 		return this.dataChannel !== null;
+	}
+
+	_checkConnected() {
+		if (!this.isConnected) throw new Error("Error: Not connected");
+	}
+
+	_checkNotConnected() {
+		if (this.isConnected) throw new Error("Error: Already connected");
 	}
 }

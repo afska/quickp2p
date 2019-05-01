@@ -19,7 +19,7 @@ export default class Create extends Component {
 	}
 
 	async componentDidMount() {
-		this.channel = await quickp2p.createChannel();
+		this.channel = await quickp2p.createMultiChannel();
 		this.setState({ token: this.channel.token });
 
 		this.channel.on("connected", () => {

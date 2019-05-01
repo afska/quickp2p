@@ -12,7 +12,7 @@ export default class Join extends Component {
 	async componentDidMount() {
 		if (!this.inviteToken) return;
 
-		this.channel = await quickp2p.joinChannel(this.inviteToken);
+		this.channel = await quickp2p.joinMultiChannel(this.inviteToken);
 
 		this.channel.on("connected", () => {
 			window.channel = this.channel;

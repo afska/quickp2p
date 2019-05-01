@@ -15,7 +15,7 @@ First, you have to create a channel:
 ```js
 import quickp2p from "quickp2p";
 
-const channel = await quickp2p.createChannel();
+const channel = await quickp2p.createMultiChannel();
 
 channel
   .on("connected", () => { /* channel connected */ })
@@ -26,7 +26,7 @@ channel
 Then, you can send `channel.token` to the other side, which should be running the following code:
 
 ```js
-const channel = await quickp2p.joinChannel(token);
+const channel = await quickp2p.joinMultiChannel(token);
 
 channel
   .on("connected", () => { /* channel connected */ })
@@ -54,7 +54,7 @@ By default, it uses a combination of public free services to handle signalling. 
 - [CORS Anywhere](https://github.com/Rob--W/cors-anywhere): To access the TinyURL API.
 - [Google](https://google.com): To access the stored data.
 
-See the implementation [here](src/lib/stores/CorsAnywhereTinyUrlGoogleStore.js).
+See the implementation [here](src/lib/stores/FreeStore.js).
 
 If you want something more reliable, you can use your own key-value store:
 
