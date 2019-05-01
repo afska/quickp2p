@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "https://tinyurl.com/";
+const URL = "https://cors-anywhere.herokuapp.com/https://tinyurl.com/";
 
 export default {
 	save(key, data) {
@@ -14,9 +14,9 @@ export default {
 	get(key) {
 		return axios
 			.get(`${URL}${key}`)
-			.then((response) => response.request.res.responseUrl)
+			.then((response) => response.request.res.responseUrl) // TODO: FIX URL
 			.then((url) => decodeURIComponent(url.replace(this._url, "")));
 	},
 
-	_url: `${URL}?data=`
+	_url: `https://google.com?data=`
 };
