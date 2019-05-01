@@ -51,8 +51,8 @@ See https://rodri042.github.io/quickp2p for a live demo!
 
 By default, it uses a combination of public free services to handle signalling. The session descriptions are saved using:
 - [TinyURL](https://tinyurl.com/): To store temporary data.
-- [CORS Anywhere](https://github.com/Rob--W/cors-anywhere): To access the TinyURL API.
-- [Google](https://google.com): To access the stored data.
+- [allOrigins](https://allorigins.win/): To access the TinyURL API.
+- [Google](https://google.com/): To access the stored data.
 
 See the implementation [here](src/lib/stores/FreeStore.js).
 

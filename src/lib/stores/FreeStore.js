@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "https://cors-anywhere.herokuapp.com/https://tinyurl.com/";
+const URL = "https://api.allorigins.win/get?url=https://tinyurl.com/";
 
 export default {
 	save(key, data) {
