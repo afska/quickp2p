@@ -15,8 +15,6 @@ export default class Channel extends EventEmitter {
 		this.dataChannel.send(data);
 	}
 
-	waitFor(token) {}
-
 	connect(connection, dataChannel) {
 		this.connection = connection;
 		this.dataChannel = dataChannel;

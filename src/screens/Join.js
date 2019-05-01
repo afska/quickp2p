@@ -15,8 +15,6 @@ export default class Join extends Component {
 		this.channel = await quickp2p.joinChannel(this.inviteToken);
 
 		this.channel.on("connected", () => {
-			alert("CONNECTED!");
-
 			window.channel = this.channel;
 			window.location.hash = "#/chat";
 		});

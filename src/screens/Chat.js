@@ -11,8 +11,9 @@ export default class Chat extends Component {
 				<textarea
 					value={this.state.messages.join("\n")}
 					readOnly
-					style={{ width: "50%" }}
-					rows={10}
+					style={{ width: "100%" }}
+					rows={15}
+					ref={(textarea) => (this.textarea = textarea)}
 				/>
 				<br />
 				<input
@@ -24,12 +25,11 @@ export default class Chat extends Component {
 					onKeyDown={(e) => {
 						if (e.key === "Enter") {
 							window.channel.send(this.state.input);
-							this.setState({
-								input: "",
-								messages: [...this.state.messages, `Me: ${this.state.input}`]
-							});
+							this.setState({ input: "" });
+							this._addMessage(`Me: ${this.state.input}`);
 						}
 					}}
+					style={{ width: "100%" }}
 				/>
 			</div>
 		);
@@ -40,17 +40,27 @@ export default class Chat extends Component {
 		if (!channel) return;
 
 		channel.on("data", (data) => {
-			this.setState({
-				messages: [...this.state.messages, `Stranger: ${data}`]
-			});
+			this._addMessage(`Stranger: ${data}`);
 		});
 
 		channel.on("disconnected", () => {
 			alert("DISCONNECTED!");
+			window.location.hash = "#/";
 		});
 	}
 
 	componentWillUnmount() {
 		window.channel = undefined;
+	}
+
+	_addMessage(content) {
+		this.setState(
+			{
+				messages: [...this.state.messages, content]
+			},
+			() => {
+				this.textarea.scrollTop = this.textarea.scrollHeight;
+			}
+		);
 	}
 }

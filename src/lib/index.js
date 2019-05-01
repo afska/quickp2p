@@ -1,12 +1,12 @@
 import Channel from "./Channel";
-import TinyUrlStore from "./stores/TinyUrlStore";
+import CorsAnywhereTinyUrlGoogleStore from "./stores/CorsAnywhereTinyUrlGoogleStore";
 import serializer from "./serializer";
 import uuid from "uuid/v1";
 
 const CHANNEL_NAME = "data";
 const ANSWER_SUFFIX = "-answer";
 
-let store = TinyUrlStore;
+let store = CorsAnywhereTinyUrlGoogleStore;
 let iceServers = [{ urls: "stun:stun.l.google.com:19302" }];
 
 export default {

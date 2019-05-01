@@ -14,9 +14,14 @@ export default {
 	get(key) {
 		return axios
 			.get(`${URL}${key}`)
-			.then((response) => response.request.res.responseUrl) // TODO: FIX URL
-			.then((url) => decodeURIComponent(url.replace(this._url, "")));
+			.then((response) => {
+				const { data } = response;
+				const html = document.createElement("html");
+				html.innerHTML = data;
+				return html.getElementsByTagName("title")[0].text.split(" - ")[0];
+			})
+			.then((url) => decodeURIComponent(url));
 	},
 
-	_url: `https://google.com?data=`
+	_url: `https://google.com/search?q=`
 };

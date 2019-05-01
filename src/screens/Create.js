@@ -6,6 +6,8 @@ export default class Create extends Component {
 	state = { token: null };
 
 	render() {
+		if (!this.state.token) return <div>Wait...</div>;
+
 		return (
 			<div>
 				Send this link to your peer:
