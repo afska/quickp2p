@@ -12,50 +12,18 @@ export default class Create extends Component {
 				<br />
 				<br />
 				<a href={this.link}>{this.link}</a>
-				<br />
-				<br />
-				<button
-					onClick={async () => {
-						const joinToken = prompt("Insert join token");
-						const answer = { sdp: atob(joinToken), type: "answer" };
-						await this.connection.setRemoteDescription(answer);
-					}}
-				>
-					Set "JOIN TOKEN"
-				</button>
 			</div>
 		);
 	}
 
 	async componentDidMount() {
-		this.connection = new RTCPeerConnection({
-			iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
-		});
-		const channel = this.connection.createDataChannel("data");
-		const offer = await this.connection.createOffer();
-		await this.connection.setLocalDescription(offer);
+		this.channel = await quickp2p.createChannel();
+		this.setState({ token: this.channel.token });
 
-		this.connection.onicecandidate = (e) => {
-			if (e.candidate === null) {
-				// (search has finished)
-
-				console.log("OFFER", this.connection.localDescription.sdp);
-
-				const token = btoa(this.connection.localDescription.sdp);
-				this.setState({ token });
-			}
-		};
-
-		this.connection.oniceconnectionstatechange = (e) => {
-			console.log("STATE", this.connection.iceConnectionState);
-		};
-
-		channel.onopen = () => {
-			console.log("CONNECTED!");
-
-			window.channel = channel;
+		this.channel.on("connected", () => {
+			window.channel = this.channel;
 			window.location.hash = "#/chat";
-		};
+		});
 	}
 
 	get link() {

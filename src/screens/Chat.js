@@ -39,13 +39,15 @@ export default class Chat extends Component {
 		const channel = window.channel;
 		if (!channel) return;
 
-		channel.onmessage = (e) => {
-			if (!e.data) return;
-
+		channel.on("data", (data) => {
 			this.setState({
-				messages: [...this.state.messages, `Stranger: ${e.data}`]
+				messages: [...this.state.messages, `Stranger: ${data}`]
 			});
-		};
+		});
+
+		channel.on("disconnected", () => {
+			alert("DISCONNECTED!");
+		});
 	}
 
 	componentWillUnmount() {
