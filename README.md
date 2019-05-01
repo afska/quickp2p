@@ -18,7 +18,7 @@ I'll use [TinyURL](https://tinyurl.com/) for the example, but you can use any fr
 import quickp2p from "quickp2p";
 import axios from "axios";
 
-quickp2p.setSignallingStore({
+quickp2p.setStore({
   save(key, data) {
     const url = this._url + encodeURIComponent(data);
 
@@ -45,8 +45,8 @@ const channel = await quickp2p.createChannel();
 
 channel
   .on("connected", () => { /* channel connected */ })
+  .on("data", (message) => { /* message received */ })
   .on("disconnected", () => { /* channel disconnected */ })
-  .on("error", () => { /* error creating channel */ });
 ```
 
 Now send `channel.token` to the other side, which should be running a code like this one:
@@ -56,14 +56,14 @@ const channel = await quickp2p.joinChannel(token);
 
 channel
   .on("connected", () => { /* channel connected */ })
+  .on("data", (message) => { /* message received */ })
   .on("disconnected", () => { /* channel disconnected */ })
-  .on("error", () => { /* error joining channel */  });
 ```
 
 All channels have this two methods:
 
-- `channel.send(string | buffer)`: Send data
-- `channel.close()`: Disconnect
+- `channel.send(string | buffer)`
+- `channel.disconnect()`
 
 ## Development
 

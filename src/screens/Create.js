@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import utils from "../utils";
+import quickp2p from "../lib";
 
 export default class Create extends Component {
 	state = { token: null };
