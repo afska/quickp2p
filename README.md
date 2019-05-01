@@ -70,6 +70,8 @@ quickp2p.setStore({
     // return a promise of the data
   }
 });
+
+// `data` is always a base64-encoded String
 ```
 
 ### ICE Servers
@@ -81,6 +83,12 @@ By default, it uses the following ICE servers:
 ```
 
 You can set another list of servers using `quickp2p.setIceServers([ ... ])`.
+
+#### :warning: Symmetric NATs
+
+This default server list won't work if both peers are under **Symmetric NATs**. To address that problem, you'll need to use a [TURN server](https://en.wikipedia.org/wiki/Traversal_Using_Relays_around_NAT).
+
+A quick workaround could be enabling a [DMZ](https://en.wikipedia.org/wiki/DMZ_(computing)) on one side.
 
 ## Development
 
