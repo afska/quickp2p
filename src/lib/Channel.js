@@ -1,9 +1,10 @@
 import EventEmitter from "eventemitter3";
 
 export default class Channel extends EventEmitter {
-	constructor() {
+	constructor(token) {
 		super();
 
+		this.token = token;
 		this.connection = null;
 		this.dataChannel = null;
 	}

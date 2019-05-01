@@ -11,9 +11,9 @@ export default class Chat extends Component {
 				<textarea
 					value={this.state.messages.join("\n")}
 					readOnly
-					style={{ width: "100%" }}
 					rows={15}
 					ref={(textarea) => (this.textarea = textarea)}
+					style={{ width: "100%" }}
 				/>
 				<br />
 				<input
@@ -29,6 +29,7 @@ export default class Chat extends Component {
 							this._addMessage(`Me: ${this.state.input}`);
 						}
 					}}
+					ref={(input) => (this.input = input)}
 					style={{ width: "100%" }}
 				/>
 			</div>
@@ -47,6 +48,8 @@ export default class Chat extends Component {
 			alert("DISCONNECTED!");
 			window.location.hash = "#/";
 		});
+
+		this.input.focus();
 	}
 
 	componentWillUnmount() {
