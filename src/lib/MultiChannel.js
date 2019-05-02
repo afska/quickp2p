@@ -8,9 +8,9 @@ export default class MultiChannel extends EventEmitter {
 		this.channel2 = null;
 		this.selectedChannel = null;
 
-		this.handleConnection = this.handleConnection.bind(this);
-		this.handleDisconnection = this.handleDisconnection.bind(this);
-		this.handleData = this.handleData.bind(this);
+		this._handleConnection = this._handleConnection.bind(this);
+		this._handleDisconnection = this._handleDisconnection.bind(this);
+		this._handleData = this._handleData.bind(this);
 
 		this._subscribeChannel(this.channel1, () => this.channel2);
 	}
@@ -33,20 +33,9 @@ export default class MultiChannel extends EventEmitter {
 		this._subscribeChannel(this.channel2, () => this.channel1);
 	}
 
-	handleConnection(channel) {
-		if (this.isConnected) return;
-		this.selectedChannel = channel;
-		this.emit("connected");
-	}
-
-	handleDisconnection(channel, otherChannel) {
-		if (otherChannel && otherChannel.isConnected)
-			this.selectedChannel = otherChannel;
-		else this.emit("disconnected");
-	}
-
-	handleData(data) {
-		this.emit("data", data);
+	on(event, handler) {
+		if (event === "connected" && this.isConnected) handler();
+		return super.on(event, handler);
 	}
 
 	get token() {
@@ -62,15 +51,29 @@ export default class MultiChannel extends EventEmitter {
 	}
 
 	_subscribeChannel(channel, getOtherChannel) {
-		if (channel.isConnected) this.handleConnection(channel);
-
 		channel
 			.on("connected", () => {
-				this.handleConnection(channel);
+				this._handleConnection(channel);
 			})
 			.on("disconnected", () => {
-				this.handleDisconnection(channel, getOtherChannel());
+				this._handleDisconnection(channel, getOtherChannel());
 			})
-			.on("data", this.handleData);
+			.on("data", this._handleData);
+	}
+
+	_handleConnection(channel) {
+		if (this.isConnected) return;
+		this.selectedChannel = channel;
+		this.emit("connected");
+	}
+
+	_handleDisconnection(channel, otherChannel) {
+		if (otherChannel && otherChannel.isConnected)
+			this.selectedChannel = otherChannel;
+		else this.emit("disconnected");
+	}
+
+	_handleData(data) {
+		this.emit("data", data);
 	}
 }

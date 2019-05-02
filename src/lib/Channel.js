@@ -41,6 +41,11 @@ export default class Channel extends EventEmitter {
 		this.emit("connected");
 	}
 
+	on(event, handler) {
+		if (event === "connected" && this.isConnected) handler();
+		return super.on(event, handler);
+	}
+
 	get isConnected() {
 		return this.dataChannel !== null;
 	}
