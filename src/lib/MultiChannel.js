@@ -24,8 +24,7 @@ export default class MultiChannel extends EventEmitter {
 	disconnect() {
 		this.channel1.disconnect();
 		if (this.channel2) this.channel2.disconnect();
-		this.selectedChannel = null;
-		this.$waitChannel2 = null;
+		this._clean();
 	}
 
 	connect(channel2) {
@@ -68,12 +67,22 @@ export default class MultiChannel extends EventEmitter {
 	}
 
 	_handleDisconnection(channel, otherChannel) {
+		const wasConnected = this.isConnected;
+
 		if (otherChannel && otherChannel.isConnected)
 			this.selectedChannel = otherChannel;
-		else this.emit("disconnected");
+		else if (wasConnected) {
+			this._clean();
+			this.emit("disconnected");
+		}
 	}
 
 	_handleData(data) {
 		this.emit("data", data);
+	}
+
+	_clean() {
+		this.selectedChannel = null;
+		this.$waitChannel2 = null;
 	}
 }
