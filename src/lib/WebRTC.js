@@ -1,4 +1,5 @@
-import serializer from "./serializer";
+import serializer from "./helpers/serializer";
+import retry from "./helpers/retry";
 
 const CHANNEL_NAME = "data";
 const ANSWER_SUFFIX = "-answer";
@@ -84,15 +85,10 @@ export default class WebRTC {
 	}
 
 	setWaitHandler(connection, channel) {
-		channel.$waitAnswer = async () => {
-			try {
-				const answer = await this.getAnswer(channel);
-				await connection.setRemoteDescription(answer);
-			} catch (e) {
-				if (channel.$waitAnswer) channel.$waitAnswer();
-			}
-		};
-		channel.$waitAnswer();
+		retry(channel, "$waitAnswer", async () => {
+			const answer = await this.getAnswer(channel);
+			await connection.setRemoteDescription(answer);
+		});
 	}
 
 	get store() {

@@ -1,11 +1,12 @@
 import axios from "axios";
 
 const PROXY = "https://api.allorigins.win/get?url=";
-const URL = "https://tinyurl.com";
+const SHORTENER = "https://tinyurl.com";
+const ECHO = "http://scooterlabs.com/echo.json?data=";
 
 export default {
 	save(key, data) {
-		const url = this._url + encodeURIComponent(data);
+		const url = ECHO + encodeURIComponent(data);
 		const encodedUrl = encodeURIComponent(url);
 		const apiUrl = this._getCallUrl(
 			`/create.php?url=${encodedUrl}&alias=${key}&submit=Make%20TinyURL!`
@@ -18,15 +19,9 @@ export default {
 		return axios
 			.get(this._getCallUrl(`/${key}`))
 			.then(this._adaptResponse)
-			.then((data) => {
-				const html = document.createElement("html");
-				html.innerHTML = data;
-				return html.getElementsByTagName("title")[0].text.split(" - ")[0];
-			})
+			.then((data) => JSON.parse(data).request.data)
 			.then((url) => decodeURIComponent(url));
 	},
-
-	_url: `https://google.com/search?q=`,
 
 	_adaptResponse(response) {
 		const { data } = response;
@@ -36,6 +31,6 @@ export default {
 	},
 
 	_getCallUrl(route) {
-		return PROXY + encodeURIComponent(URL + route);
+		return PROXY + encodeURIComponent(SHORTENER + route);
 	}
 };

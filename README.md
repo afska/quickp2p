@@ -50,9 +50,9 @@ See https://rodri042.github.io/quickp2p for a live demo!
 ### Signalling
 
 By default, it uses a combination of public free services to handle signalling. The session descriptions are saved using:
-- [TinyURL](https://tinyurl.com/): To store temporary data.
-- [allOrigins](https://allorigins.win/): To access the TinyURL API.
-- [Google](https://google.com/): To access the stored data.
+- [TinyURL](https://tinyurl.com): To store temporary data.
+- [allOrigins](https://allorigins.win): To access the TinyURL API.
+- [Echo Service](http://scooterlabs.com/echo): To access the stored data.
 
 See the implementation [here](src/lib/stores/FreeStore.js).
 

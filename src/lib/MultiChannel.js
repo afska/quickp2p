@@ -12,7 +12,7 @@ export default class MultiChannel extends EventEmitter {
 		this.handleDisconnection = this.handleDisconnection.bind(this);
 		this.handleData = this.handleData.bind(this);
 
-		this._subscribeChannel1();
+		this._subscribeChannel(this.channel1, () => this.channel2);
 	}
 
 	send(data) {
@@ -30,7 +30,7 @@ export default class MultiChannel extends EventEmitter {
 
 	connect(channel2) {
 		this.channel2 = channel2;
-		this._subscribeChannel2();
+		this._subscribeChannel(this.channel2, () => this.channel1);
 	}
 
 	handleConnection(channel) {
@@ -61,24 +61,15 @@ export default class MultiChannel extends EventEmitter {
 		if (!this.isConnected) throw new Error("Error: Not connected");
 	}
 
-	_subscribeChannel1() {
-		this.channel1
-			.on("connected", () => {
-				this.handleConnection(this.channel1);
-			})
-			.on("disconnected", () => {
-				this.handleDisconnection(this.channel1, this.channel2);
-			})
-			.on("data", this.handleData);
-	}
+	_subscribeChannel(channel, getOtherChannel) {
+		if (channel.isConnected) this.handleConnection(channel);
 
-	_subscribeChannel2() {
-		this.channel2
+		channel
 			.on("connected", () => {
-				this.handleConnection(this.channel2);
+				this.handleConnection(channel);
 			})
 			.on("disconnected", () => {
-				this.handleDisconnection(this.channel2, this.channel1);
+				this.handleDisconnection(channel, getOtherChannel());
 			})
 			.on("data", this.handleData);
 	}

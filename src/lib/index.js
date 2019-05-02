@@ -2,6 +2,7 @@ import WebRTC from "./WebRTC";
 import Channel from "./Channel";
 import MultiChannel from "./MultiChannel";
 import FreeStore from "./stores/FreeStore";
+import retry from "./helpers/retry";
 
 const CHANNEL2_SUFFIX = "-2";
 const config = {
@@ -15,17 +16,12 @@ export default {
 		const channel1 = await this.createSingleChannel();
 		const channel = new MultiChannel(channel1);
 
-		channel.$waitChannel2 = async () => {
-			try {
-				const channel2 = await this.joinSingleChannel(
-					channel.token + CHANNEL2_SUFFIX
-				);
-				channel.connect(channel2);
-			} catch (e) {
-				if (channel.$waitChannel2) channel.$waitChannel2();
-			}
-		};
-		channel.$waitChannel2();
+		retry(channel, "$waitChannel2", async () => {
+			const channel2 = await this.joinSingleChannel(
+				channel.token + CHANNEL2_SUFFIX
+			);
+			channel.connect(channel2);
+		});
 
 		return channel;
 	},
