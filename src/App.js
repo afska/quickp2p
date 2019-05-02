@@ -17,6 +17,15 @@ export default class App extends Component {
 				/#/create
 				<br />
 				/#/join?token=INVITE_TOKEN
+				<br />
+				<br />>{" "}
+				<a
+					href="https://github.com/rodri042/quickp2p"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Source code and instructions
+				</a>
 			</div>
 		);
 	}
