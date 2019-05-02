@@ -10,7 +10,7 @@ export default class Create extends Component {
 
 		return (
 			<div>
-				Send this link to your peer:
+				Send this link to your peer and wait...
 				<br />
 				<br />
 				<a href={this.link}>{this.link}</a>
