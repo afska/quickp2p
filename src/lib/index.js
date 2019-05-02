@@ -11,13 +11,13 @@ const config = {
 const webrtc = new WebRTC(config);
 
 export default {
-	async createMultiChannel() {
-		const channel1 = await this.createChannel();
+	async createChannel() {
+		const channel1 = await this.createSingleChannel();
 		const channel = new MultiChannel(channel1);
 
 		channel.$waitChannel2 = async () => {
 			try {
-				const channel2 = await this.joinChannel(
+				const channel2 = await this.joinSingleChannel(
 					channel.token + CHANNEL2_SUFFIX
 				);
 				channel.connect(channel2);
@@ -30,14 +30,14 @@ export default {
 		return channel;
 	},
 
-	async joinMultiChannel(token) {
-		const channel1 = await this.joinChannel(token);
-		const channel2 = await this.createChannel(token + CHANNEL2_SUFFIX);
+	async joinChannel(token) {
+		const channel1 = await this.joinSingleChannel(token);
+		const channel2 = await this.createSingleChannel(token + CHANNEL2_SUFFIX);
 
 		return new MultiChannel(channel1, channel2);
 	},
 
-	async createChannel(id) {
+	async createSingleChannel(id) {
 		const channel = new Channel(id);
 
 		const {
@@ -53,7 +53,7 @@ export default {
 		return channel;
 	},
 
-	async joinChannel(token) {
+	async joinSingleChannel(token) {
 		const channel = new Channel(token);
 
 		const offer = await webrtc.getOffer(channel);

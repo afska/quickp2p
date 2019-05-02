@@ -15,7 +15,7 @@ First, you have to create a channel:
 ```js
 import quickp2p from "quickp2p";
 
-const channel = await quickp2p.createMultiChannel();
+const channel = await quickp2p.createChannel();
 
 channel
   .on("connected", () => { /* channel connected */ })
@@ -26,7 +26,7 @@ channel
 Then, you can send `channel.token` to the other side, which should be running the following code:
 
 ```js
-const channel = await quickp2p.joinMultiChannel(token);
+const channel = await quickp2p.joinChannel(token);
 
 channel
   .on("connected", () => { /* channel connected */ })
