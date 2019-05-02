@@ -76,7 +76,9 @@ export default class WebRTC {
 
 	setDisconnectHandler(connection, channel) {
 		connection.oniceconnectionstatechange = (e) => {
-			const isDisconnected = connection.iceConnectionState !== "connected";
+			const state = connection.iceConnectionState;
+			const isDisconnected =
+				state === "failed" || state === "disconnected" || state === "closed";
 			if (channel.isConnected && isDisconnected) channel.disconnect();
 		};
 	}
