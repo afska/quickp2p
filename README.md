@@ -45,7 +45,7 @@ All channels have these methods:
 
 See https://rodri042.github.io/quickp2p for a live demo!
 
-## How does it works?
+## How does it work?
 
 ### Signalling
 
