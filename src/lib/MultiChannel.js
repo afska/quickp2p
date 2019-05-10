@@ -1,18 +1,19 @@
 import EventEmitter from "eventemitter3";
 
 export default class MultiChannel extends EventEmitter {
-	constructor(channel1) {
+	constructor(channel1, channel2) {
 		super();
-
-		this.channel1 = channel1;
-		this.channel2 = null;
-		this.selectedChannel = null;
 
 		this._handleConnection = this._handleConnection.bind(this);
 		this._handleDisconnection = this._handleDisconnection.bind(this);
 		this._handleData = this._handleData.bind(this);
 
+		this.channel1 = channel1;
+		this.channel2 = null;
+		this.selectedChannel = null;
+
 		this._subscribeChannel(this.channel1, () => this.channel2);
+		if (channel2) this.connect(channel2);
 	}
 
 	send(data) {
@@ -62,6 +63,7 @@ export default class MultiChannel extends EventEmitter {
 
 	_handleConnection(channel) {
 		if (this.isConnected) return;
+
 		this.selectedChannel = channel;
 		this.emit("connected");
 	}
