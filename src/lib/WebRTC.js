@@ -92,7 +92,10 @@ export default class WebRTC {
 	}
 
 	get store() {
-		return this.config.store;
+		const { store } = this.config;
+		if (!store) throw new Error("Store not set, use `.setStore(...)`");
+
+		return store;
 	}
 
 	_createConnection() {

@@ -1,15 +1,17 @@
 import WebRTC from "./WebRTC";
 import Channel from "./Channel";
 import MultiChannel from "./MultiChannel";
-import FreeStore from "./stores/FreeStore";
+import SimpleStore from "./stores/SimpleStore";
 import retry from "./helpers/retry";
 
 const CHANNEL2_SUFFIX = "-2";
 const config = {
-	store: FreeStore,
+	store: null,
 	iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
 };
 const webrtc = new WebRTC(config);
+
+export { SimpleStore };
 
 export default {
 	async createChannel() {

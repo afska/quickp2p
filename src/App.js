@@ -1,7 +1,12 @@
 import React, { Component } from "react";
+import quickp2p, { SimpleStore } from "./lib";
 import Create from "./screens/Create";
 import Join from "./screens/Join";
 import Chat from "./screens/Chat";
+
+quickp2p.setStore(
+	new SimpleStore("https://simple-key-value-store.herokuapp.com")
+);
 
 export default class App extends Component {
 	render() {

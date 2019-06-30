@@ -1,6 +1,6 @@
 # quickp2p
 
-A dead simple WebRTC Data Channel library. It enables serverless communication between two nodes.
+A simple WebRTC Data Channel library. It allows the communication between two nodes.
 
 ## Install
 
@@ -8,13 +8,21 @@ A dead simple WebRTC Data Channel library. It enables serverless communication b
 npm install --save quickp2p
 ```
 
+## Configuration
+
+- Deploy the `server` folder (a node.js server for temporary storage) somewhere.
+- Configure the store:
+```js
+import quickp2p, { SimpleStore } from "quickp2p";
+
+quickp2p.setStore(new SimpleStore(YOUR_STORE_URL));
+```
+
 ## Usage
 
 First, you have to create a channel:
 
 ```js
-import quickp2p from "quickp2p";
-
 const channel = await quickp2p.createChannel();
 
 channel
@@ -45,18 +53,9 @@ All channels have these methods:
 
 See https://rodri042.github.io/quickp2p for a live demo!
 
-## How does it work?
+### Signalling server
 
-### Signalling
-
-By default, it uses a combination of public free services to handle signalling. The session descriptions are saved using:
-- [TinyURL](https://tinyurl.com): To store temporary data.
-- [allOrigins](https://allorigins.win): To access the TinyURL API.
-- [Echo Service](http://scooterlabs.com/echo): To access the stored data.
-
-See the implementation [here](src/lib/stores/FreeStore.js).
-
-If you want something more reliable, you can use your own key-value store:
+You can use your own key-value store:
 
 ```js
 quickp2p.setStore({
