@@ -19,7 +19,7 @@ export default class App extends Component {
 		return (
 			<div>
 				<h1>Valid urls:</h1>
-				/#/create
+				<a href="/#/create">/#/create</a>
 				<br />
 				/#/join?token=INVITE_TOKEN
 				<br />
