@@ -1,0 +1,12 @@
+{
+  "name": "quickp2p-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "moment": "^2.24.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}

@@ -9,7 +9,7 @@ export default {
 		const url = ECHO + encodeURIComponent(data);
 		const encodedUrl = encodeURIComponent(url);
 		const apiUrl = this._getCallUrl(
-			`/create.php?url=${encodedUrl}&alias=${key}&submit=Make%20TinyURL!`
+			`/create.php?url=${encodedUrl}&source=create&alias=${key}&submit=Make%20TinyURL!`
 		);
 
 		return axios.get(apiUrl).then(this._adaptResponse);
