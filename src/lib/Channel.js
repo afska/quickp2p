@@ -41,11 +41,6 @@ export default class Channel extends BufferedEventEmitter {
 		this.emit("connected");
 	}
 
-	on(event, handler) {
-		if (event === "connected" && this.isConnected) handler();
-		return super.on(event, handler);
-	}
-
 	get isConnected() {
 		return this.dataChannel !== null;
 	}

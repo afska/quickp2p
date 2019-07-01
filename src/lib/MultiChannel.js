@@ -33,11 +33,6 @@ export default class MultiChannel extends BufferedEventEmitter {
 		this._subscribeChannel(this.channel2, () => this.channel1);
 	}
 
-	on(event, handler) {
-		if (event === "connected" && this.isConnected) handler();
-		return super.on(event, handler);
-	}
-
 	get token() {
 		return this.channel1.token;
 	}
