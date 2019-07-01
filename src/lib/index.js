@@ -42,11 +42,12 @@ export default {
 			connection,
 			dataChannel
 		} = await webrtc.createConnectionWithOffer();
-		await webrtc.saveOffer(connection, channel);
 
 		webrtc.setConnectHandler(connection, dataChannel, channel);
 		webrtc.setDisconnectHandler(connection, channel);
 		webrtc.setWaitHandler(connection, channel);
+
+		await webrtc.saveOffer(connection, channel);
 
 		return channel;
 	},

@@ -72,6 +72,13 @@ export default class WebRTC {
 	}
 
 	setConnectHandler(connection, dataChannel, channel) {
+		dataChannel.buffer = [];
+
+		dataChannel.onmessage = (e) => {
+			const data = e.data;
+			if (data) dataChannel.buffer.push(data);
+		};
+
 		dataChannel.onopen = () => channel.connect(connection, dataChannel);
 	}
 

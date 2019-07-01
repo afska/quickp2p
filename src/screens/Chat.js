@@ -23,10 +23,12 @@ export default class Chat extends Component {
 						this.setState({ input: e.target.value });
 					}}
 					onKeyDown={(e) => {
-						if (e.key === "Enter") {
-							window.channel.send(this.state.input);
+						const { input } = this.state;
+
+						if (e.key === "Enter" && input) {
+							window.channel.send(input);
 							this.setState({ input: "" });
-							this._addMessage(`Me: ${this.state.input}`);
+							this._addMessage(`Me: ${input}`);
 						}
 					}}
 					ref={(input) => (this.input = input)}

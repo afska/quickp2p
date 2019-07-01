@@ -4,12 +4,12 @@ export default class BufferedEventEmitter extends EventEmitter {
 	constructor() {
 		super();
 
-		this.pending = [];
+		this._pendingEvents = [];
 	}
 
 	emit(event, data) {
 		const hasListeners = super.emit(event, data);
-		if (!hasListeners) this.pending.push({ event, data });
+		if (!hasListeners) this._pendingEvents.push({ event, data });
 		return hasListeners;
 	}
 
@@ -17,10 +17,10 @@ export default class BufferedEventEmitter extends EventEmitter {
 		super.on(event, listener);
 
 		const isPending = (it) => it.event === event;
-		this.pending
+		this._pendingEvents
 			.filter(isPending)
-			.forEach(({ event, data }) => listener(event, data));
-		this.pending = this.pending.filter((it) => !isPending(it));
+			.forEach(({ event, data }) => listener(data));
+		this._pendingEvents = this._pendingEvents.filter((it) => !isPending(it));
 
 		return this;
 	}

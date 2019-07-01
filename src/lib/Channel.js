@@ -32,6 +32,13 @@ export default class Channel extends BufferedEventEmitter {
 
 		this.connection = connection;
 		this.dataChannel = dataChannel;
+
+		const run = (data) => this.emit("data", data);
+		if (dataChannel.buffer) {
+			dataChannel.buffer.forEach(run);
+			delete dataChannel.buffer;
+		}
+
 		this.dataChannel.onmessage = (e) => {
 			const data = e.data;
 			if (!data) return;
