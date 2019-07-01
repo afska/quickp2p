@@ -1,6 +1,6 @@
-import EventEmitter from "eventemitter3";
+import BufferedEventEmitter from "./helpers/BufferedEventEmitter";
 
-export default class MultiChannel extends EventEmitter {
+export default class MultiChannel extends BufferedEventEmitter {
 	constructor(channel1, channel2) {
 		super();
 

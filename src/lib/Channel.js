@@ -1,7 +1,7 @@
-import EventEmitter from "eventemitter3";
+import BufferedEventEmitter from "./helpers/BufferedEventEmitter";
 import uuid from "uuid/v1";
 
-export default class Channel extends EventEmitter {
+export default class Channel extends BufferedEventEmitter {
 	constructor(token = uuid()) {
 		super();
 
