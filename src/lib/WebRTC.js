@@ -13,6 +13,7 @@ export default class WebRTC {
 		try {
 			const connection = this._createConnection();
 			const dataChannel = connection.createDataChannel(CHANNEL_NAME);
+			this._configureDataChannel(dataChannel);
 			const offer = await connection.createOffer();
 			await connection.setLocalDescription(offer);
 			return { connection, dataChannel };
@@ -72,6 +73,7 @@ export default class WebRTC {
 	}
 
 	setConnectHandler(connection, dataChannel, channel) {
+		this._configureDataChannel(dataChannel);
 		dataChannel.buffer = [];
 
 		dataChannel.onmessage = (e) => {
@@ -120,5 +122,9 @@ export default class WebRTC {
 
 	_getAnswerToken(channel) {
 		return channel.token + ANSWER_SUFFIX;
+	}
+
+	_configureDataChannel(dataChannel) {
+		dataChannel.binaryType = "arraybuffer";
 	}
 }
