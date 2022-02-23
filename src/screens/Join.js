@@ -21,6 +21,11 @@ export default class Join extends Component {
 			window.channel = this.channel;
 			window.location.hash = "#/chat";
 		});
+
+		this.channel.on("timeout", () => {
+			alert("TIMEOUT!");
+			window.location.hash = "#/";
+		});
 	}
 
 	get inviteToken() {

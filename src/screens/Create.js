@@ -27,6 +27,11 @@ export default class Create extends Component {
 		this.channel.on("connected", () => {
 			window.location.hash = "#/chat";
 		});
+
+		this.channel.on("timeout", () => {
+			alert("TIMEOUT!");
+			window.location.hash = "#/";
+		});
 	}
 
 	get link() {

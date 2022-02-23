@@ -28,6 +28,7 @@ const channel = await quickp2p.createChannel();
 channel
   .on("connected", () => { /* channel connected */ })
   .on("data", (message) => { /* message received */ })
+  .on("timeout", () => { /* connection timeout */ })
   .on("disconnected", () => { /* channel disconnected */ });
 ```
 
@@ -39,6 +40,7 @@ const channel = await quickp2p.joinChannel(token);
 channel
   .on("connected", () => { /* channel connected */ })
   .on("data", (message) => { /* message received */ })
+  .on("timeout", () => { /* connection timeout */ })
   .on("disconnected", () => { /* channel disconnected */ });
 ```
 
@@ -48,6 +50,8 @@ All channels have these methods:
 | ------------ |:-------------------:| --------------------------------------------------------------|
 | `send`       | `String` or `Buffer`| Sends the data or throws an error if the connection was lost. |
 | `disconnect` | -                   | Ends the connection.                                          |
+
+If a channel emitted `"timeout"` or `"disconnected"`, it should be discarded.
 
 ## Demo
 
@@ -81,7 +85,11 @@ By default, it uses the following ICE servers:
 [{ urls: "stun:stun.l.google.com:19302" }]
 ```
 
-You can set another list of servers using `quickp2p.setIceServers([ ... ])`.
+You can set another list of servers by using `quickp2p.setIceServers([ ... ])`.
+
+### Timeout
+
+You can change connection timeout (in milliseconds) by using `quickp2p.setTimeout(15 * 1000)`.
 
 #### :warning: Symmetric NATs
 

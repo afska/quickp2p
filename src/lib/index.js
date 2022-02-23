@@ -7,7 +7,8 @@ import retry from "./helpers/retry";
 const CHANNEL2_SUFFIX = "-2";
 const config = {
 	store: null,
-	iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
+	iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+	timeout: 10000
 };
 const webrtc = new WebRTC(config);
 
@@ -45,7 +46,9 @@ export default {
 
 		webrtc.setConnectHandler(connection, dataChannel, channel);
 		webrtc.setDisconnectHandler(connection, channel);
-		webrtc.setWaitHandler(connection, channel);
+		webrtc.setWaitHandler(connection, channel, () =>
+			webrtc.setUpTimeoutFor(channel)
+		);
 
 		await webrtc.saveOffer(connection, channel);
 
@@ -58,6 +61,7 @@ export default {
 		const offer = await webrtc.getOffer(channel);
 		const connection = await webrtc.createConnectionWithAnswer(offer);
 		await webrtc.saveAnswer(connection, channel);
+		webrtc.setUpTimeoutFor(channel);
 
 		connection.ondatachannel = ({ channel: dataChannel }) => {
 			webrtc.setConnectHandler(connection, dataChannel, channel);
@@ -73,5 +77,9 @@ export default {
 
 	setIceServers(newIceServers) {
 		config.iceServers = newIceServers;
+	},
+
+	setTimeout(newTimeout) {
+		config.timeout = newTimeout;
 	}
 };

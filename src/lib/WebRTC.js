@@ -93,11 +93,17 @@ export default class WebRTC {
 		};
 	}
 
-	setWaitHandler(connection, channel) {
+	setWaitHandler(connection, channel, onAnswer) {
 		retry(channel, "$waitAnswer", async () => {
 			const answer = await this.getAnswer(channel);
 			await connection.setRemoteDescription(answer);
+			onAnswer();
 		});
+	}
+
+	setUpTimeoutFor(channel) {
+		const { timeout } = this.config;
+		channel.setUpTimeout(timeout);
 	}
 
 	get store() {

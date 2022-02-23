@@ -53,6 +53,9 @@ export default class MultiChannel extends BufferedEventEmitter {
 			.on("disconnected", () => {
 				this._handleDisconnection(channel, getOtherChannel());
 			})
+			.on("timeout", () => {
+				this._handleTimeout(channel, getOtherChannel());
+			})
 			.on("data", this._handleData);
 	}
 
@@ -72,6 +75,10 @@ export default class MultiChannel extends BufferedEventEmitter {
 			this._clean();
 			this.emit("disconnected");
 		}
+	}
+
+	_handleTimeout(channel, otherChannel) {
+		if (channel.didTimeout && otherChannel.didTimeout) this.emit("timeout");
 	}
 
 	_handleData(data) {
