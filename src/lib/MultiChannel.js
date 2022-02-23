@@ -14,6 +14,8 @@ export default class MultiChannel extends BufferedEventEmitter {
 
 		this._subscribeChannel(this.channel1, () => this.channel2);
 		if (channel2) this.connect(channel2);
+
+		this.didTimeout = false;
 	}
 
 	send(data) {
@@ -78,7 +80,16 @@ export default class MultiChannel extends BufferedEventEmitter {
 	}
 
 	_handleTimeout(channel, otherChannel) {
-		if (channel.didTimeout && otherChannel.didTimeout) this.emit("timeout");
+		if (
+			(channel.didTimeout || otherChannel.didTimeout) &&
+			!this.isConnected &&
+			!this.didTimeout
+		) {
+			this.didTimeout = true;
+
+			this.disconnect();
+			this.emit("timeout");
+		}
 	}
 
 	_handleData(data) {
