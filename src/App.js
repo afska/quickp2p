@@ -4,9 +4,7 @@ import Create from "./screens/Create";
 import Join from "./screens/Join";
 import Chat from "./screens/Chat";
 
-quickp2p.setStore(
-	new SimpleStore("https://simple-key-value-store.herokuapp.com")
-);
+quickp2p.setStore(new SimpleStore("https://misc.r-labs.io"));
 
 export default class App extends Component {
 	render() {
