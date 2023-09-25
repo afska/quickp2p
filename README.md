@@ -55,7 +55,7 @@ If a channel emitted `"timeout"` or `"disconnected"`, it should be discarded.
 
 ## Demo
 
-See https://rodri042.github.io/quickp2p for a live demo!
+See https://afska.github.io/quickp2p for a live demo!
 
 ### Signalling server
 

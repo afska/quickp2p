@@ -16,5 +16,5 @@ try cd build/
 git init
 git add -A .
 git commit -m "Deploy"
-git remote add origin https://github.com/rodri042/quickp2p
+git remote add origin https://github.com/afska/quickp2p
 git push -f origin master:gh-pages

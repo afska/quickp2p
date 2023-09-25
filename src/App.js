@@ -23,7 +23,7 @@ export default class App extends Component {
 				<br />
 				<br />>{" "}
 				<a
-					href="https://github.com/rodri042/quickp2p"
+					href="https://github.com/afska/quickp2p"
 					target="_blank"
 					rel="noopener noreferrer"
 				>
