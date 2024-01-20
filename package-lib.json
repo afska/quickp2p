@@ -3,8 +3,9 @@
   "version": "2.1.2",
   "main": "lib/index.js",
   "dependencies": {
-    "axios": "^0.18.0",
-    "eventemitter3": "^3.1.2",
+    "axios": "^1.6.5",
+    "eventemitter3": "^5.0.1",
     "uuid": "^3.3.2"
-  }
+  },
+  "license": "MIT"
 }

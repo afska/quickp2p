@@ -1,4 +1,4 @@
-import querystring from "querystring";
+import querystring from "query-string";
 
 export default {
 	getBaseUrl() {
