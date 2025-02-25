@@ -1,3 +1,5 @@
+> ⚠️ This project is unmaintained. Please, use [peerjs](https://github.com/peers/peerjs).
+
 # quickp2p
 
 A simple WebRTC Data Channel library. It allows the communication between two nodes.
